@@ -28,10 +28,9 @@ def mazegenerator(n):
     #definining start and end
     mazematrix[0][0]="S"
     mazematrix[n-1][n-1]="E"
-    print(mazematrix)
     return mazematrix
 
-
+mazematrix=path=mazegenerator(5)
 #displaying the maze
 
 def displaymaze(mazematrix):
@@ -42,13 +41,90 @@ def displaymaze(mazematrix):
                 print(colored("|o|","blue","on_black"),end="")
             elif mazematrix[row][col]=="▓":
                 print(colored("|▓|","red","on_black"),end="")
-            elif mazematrix[row][col]=="◍":
-                print(colored("|◍|","green","on_black"),end="")
             elif mazematrix[row][col]=="S":
                 print(colored("|S|","green","on_black"),end="")
+            elif mazematrix[row][col]=="◍":
+                print(colored("|◍|","green","on_black"),end="")
             else:
                 print(colored("|E|","green","on_black"),end="")
         print()
-displaymaze(mazegenerator(5))
 
+
+#displaymaze(mazegenerator(5))
+
+#finding path
+def findPath(mazematrix,pos,path,visited,shortest_path):
+    row,col=pos
+    n=len(mazematrix)
+
+    #if the pos is out of bounds or is a wall
+    if row<0 or row>n-1 or col<0 or col>n-1 or mazematrix[row][col]=="▓" or (row,col) in visited:
+        return False
+    
+    if (row,col) in visited:
+        path.pop()
+        return False
+    visited[(row,col)]=1
+    path.append([row,col])
+
+    #return path if we reach end
+    if row==n-1 and col==n-1:
+        if shortest_path==[] or len(path)<len(shortest_path):
+            shortest_path[:]=path.copy()
+
+    #if any of the direction found path 
+    findPath(mazematrix,[row-1,col],path,visited,shortest_path)
+    findPath(mazematrix,[row+1,col],path,visited,shortest_path)
+    findPath(mazematrix,[row,col-1],path,visited,shortest_path)
+    findPath(mazematrix,[row,col+1],path,visited,shortest_path)
+    
+    path.pop()
+    return False
+
+
+
+#displaying the path
+def displaypath(mazematrix,shortestPath):
+    if not shortestPath:
+        print("no path found")
+        return
+    n=len(mazematrix)
+    for i in range(len(shortestPath)):
+        if shortestPath[i]==[0,0] or shortestPath[i]==[n-1,n-1]:
+            continue
+        row,col=shortestPath[i]
+        mazematrix[row][col]= "◍"
+    displaymaze(mazematrix)
+
+
+
+def main():
+    n=int(input("What size matrix you want? type a number"))
+
+    maze=mazegenerator(n)
+    print("This is your maze")
+    displaymaze(maze)
+    while True:
+        userChoice=int(input("1.Print Path? 2.Genererate another maze 3.Exit"))
+        if userChoice==3:
+            print("Exited, You chose to exit")
+            break
+        elif userChoice==2:
+            maze=mazegenerator(n)
+            print("Your new maze")
+            displaymaze(maze)
+        elif userChoice==1:
+            shortestPath=[]
+            findPath(mazematrix,[0,0],[],{},shortestPath)
+            print(shortestPath,"sssss")
+            displaypath(mazematrix,shortestPath)
+        else:
+            print("Wrong input, choose : 1.Print Path? 2.Genererate another maze 3.Exit")
+main()
+
+
+
+    
+
+    
 
