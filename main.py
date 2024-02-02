@@ -3,7 +3,6 @@ from termcolor import colored
 from colorama import just_fix_windows_console
 just_fix_windows_console()
 import random
-
 #generating the initial maze of n*n size
 def mazegenerator(n):
     mazematrix=[]
@@ -30,7 +29,7 @@ def mazegenerator(n):
     mazematrix[n-1][n-1]="E"
     return mazematrix
 
-mazematrix=path=mazegenerator(5)
+
 #displaying the maze
 
 def displaymaze(mazematrix):
@@ -102,6 +101,7 @@ def main():
     n=int(input("What size matrix you want? type a number"))
 
     maze=mazegenerator(n)
+    mazematrix=path=mazegenerator(n)
     print("This is your maze")
     displaymaze(maze)
     while True:
@@ -116,7 +116,6 @@ def main():
         elif userChoice==1:
             shortestPath=[]
             findPath(mazematrix,[0,0],[],{},shortestPath)
-            print(shortestPath,"sssss")
             displaypath(mazematrix,shortestPath)
         else:
             print("Wrong input, choose : 1.Print Path? 2.Genererate another maze 3.Exit")
