@@ -101,7 +101,7 @@ def main():
     n=int(input("What size matrix you want? type a number"))
 
     maze=mazegenerator(n)
-    mazematrix=path=mazegenerator(n)
+    mazematrix=mazegenerator(n)
     print("This is your maze")
     displaymaze(maze)
     while True:
